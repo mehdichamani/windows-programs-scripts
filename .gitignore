@@ -1,0 +1,30 @@
+# Windows OS Artifacts
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS / Linux Artifacts
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor & IDE Directories
+.vscode/
+.idea/
+*.swp
+*.bak
+*~
+
+# Temporary & Log files
+*.log
+*.tmp
+*.temp
+
+# Secrets / sensitive local files (if any in future)
+*.env
+*.key
+*.pem
+private.json
