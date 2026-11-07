@@ -1,7 +1,19 @@
-# Office 365 Offline Installer (Word, Excel, PowerPoint)
-# Requires Administrator privileges
+<#
+.SYNOPSIS
+    Office 365 Offline Installer (Word, Excel, PowerPoint)
+#>
 
 $ErrorActionPreference = "Stop"
+
+# Self-elevation check to Administrator
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+$isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $isAdmin) {
+    $scriptPath = $MyInvocation.MyCommand.Path
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" -Verb RunAs
+    exit
+}
 
 # Determine script directory
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -12,19 +24,12 @@ if ([string]::IsNullOrWhiteSpace($scriptDir)) {
     $scriptDir = (Get-Location).Path
 }
 
-# 1. Check Administrator privileges
-$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $isAdmin) {
-    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptDir\Install_Office365.ps1`"" -Verb RunAs
-    exit
-}
-
 Clear-Host
 $Host.UI.RawUI.WindowTitle = "Office 365 Offline Installer"
 
-Write-Host "=========================================================" -ForegroundColor Green
-Write-Host "     Office 365 Offline Installer (Word, Excel, PPT)     " -ForegroundColor Green
-Write-Host "=========================================================" -ForegroundColor Green
+Write-Host "=========================================================" -ForegroundColor Cyan
+Write-Host "     Office 365 Offline Installer (Word, Excel, PPT)     " -ForegroundColor Cyan
+Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Description:" -ForegroundColor Yellow
 Write-Host "  Installs Microsoft Office 365 offline directly from the" -ForegroundColor Gray
